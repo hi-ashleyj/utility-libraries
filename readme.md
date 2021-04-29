@@ -46,17 +46,20 @@ let response = await Comms.post("/handler",
     );
 ```
 
-## ws.js
+## wsBean.js (used to be ws.js)
 
-Barebones wrapper and events around websockets
+Wrapper and events around websockets
 
 ### Docs
 ```js
-// Contains location
-let host = wsurl;
+// Create websocket (uses ws://this.url.root/ by default)
+let socket = new wsBean("ws://your.url.example");
+
+// URL used
+let host = socket.wsurl;
 
 // Raw websocket
-let web_socket = wsc;
+let webSocket = socket.wsc;
 
 // This websocket handler expects JSON packets with a type and data property, eg:
 // {
@@ -68,9 +71,19 @@ let web_socket = wsc;
 //     }
 // }
 
+// Detect connection
+Socket.on("_connect", connectHandler); // Gets passed URL
+
 // Handle messages
-Socket.on("user_message", displayMessageHandler);
+Socket.on("user_message", displayMessageHandler); // Gets passed (url, type)
+
+// Handle errors
+Socket.on("_error", errorHandler); // Gets passed { type: "error name", more?: Error object }
 
 // Send messages
 Socket.send(JSON.stringify({ your_reply: here }));
+
+// To update to this version, and polyfill the breaking changes, simply add
+let Socket = new wsBean();
+// before you use it.
 ```
