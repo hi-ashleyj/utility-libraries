@@ -7,7 +7,7 @@ let wsBean = function(url) {
 
     let u = this;
     this.wsc.addEventListener('open', function (event) {
-        u.fire("connect", { url: u.wsurl });
+        u.fire("_connect", { url: u.wsurl });
     });
     
     this.wsc.addEventListener('message', function (event) {
@@ -18,7 +18,7 @@ let wsBean = function(url) {
             let msg = res.data;
             u.fire(type, msg);
         } catch (err) {
-            u.fire("error", { type: "parse", more: err });
+            u.fire("_error", { type: "parse", more: err });
         }
     });
 
